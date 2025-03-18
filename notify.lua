@@ -47,13 +47,13 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconType, V
     -- Icons je nach Typ
     local IconId
     if IconType == "Warning" then
-        IconId = "rbxassetid://3944668821"  -- Warning
+        IconId = "rbxassetid://3944668821"  -- Warnzeichen
     elseif IconType == "Info" then
-        IconId = "rbxassetid://150832287"   -- Information
+        IconId = "rbxassetid://150832287"   -- Informationssymbol
     elseif IconType == "Error" then
-        IconId = "rbxassetid://717772643"   -- Error
+        IconId = "rbxassetid://717772643"   -- Fehlerzeichen
     else
-        IconId = "rbxassetid://3944668821"   -- Standard: Warning
+        IconId = "rbxassetid://3944668821"   -- Standard: Warnung
     end
 
     Warning.Name = "Warning"
@@ -64,13 +64,29 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconType, V
     Warning.Image = IconId
     Warning.ImageColor3 = Color3.fromRGB(241, 196, 15)  -- Standardfarbe für Warnung
 
-    -- Titel und Beschreibung
+    -- Emojis in den Texten
+    local emojiTitle, emojiDesc
+    if IconType == "Warning" then
+        emojiTitle = "⚠️ " .. TitleText  -- Warnung Emoji
+        emojiDesc = "🚨 " .. Desc        -- Alarm Emoji
+    elseif IconType == "Info" then
+        emojiTitle = "ℹ️ " .. TitleText  -- Info Emoji
+        emojiDesc = "📝 " .. Desc        -- Notiz Emoji
+    elseif IconType == "Error" then
+        emojiTitle = "❌ " .. TitleText  -- Fehler Emoji
+        emojiDesc = "⚠️ " .. Desc       -- Warnung Emoji
+    else
+        emojiTitle = "❓ " .. TitleText  -- Standard: Fragezeichen
+        emojiDesc = "🔍 " .. Desc       -- Lupe Emoji
+    end
+
+    -- Titel und Beschreibung mit Emojis
     Title.Name = "Title"
     Title.Parent = Notification
     Title.BackgroundTransparency = 1.000
     Title.Position = UDim2.new(0.15, 0, 0.15, 0)
     Title.Size = UDim2.new(0, 300, 0, 15)
-    Title.Text = TitleText
+    Title.Text = emojiTitle
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 14
     Title.Font = Enum.Font.GothamBold
@@ -81,7 +97,7 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconType, V
     Description.BackgroundTransparency = 1.000
     Description.Position = UDim2.new(0.15, 0, 0.5, 0)
     Description.Size = UDim2.new(0, 300, 0, 18)
-    Description.Text = Desc
+    Description.Text = emojiDesc
     Description.TextColor3 = Color3.fromRGB(200, 200, 200)
     Description.TextSize = 12
     Description.Font = Enum.Font.Gotham
