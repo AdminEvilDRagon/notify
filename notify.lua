@@ -47,13 +47,13 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconType, V
     -- Icons je nach Typ
     local IconId
     if IconType == "Warning" then
-        IconId = "rbxassetid://3944668821"  -- Warnzeichen
+        IconId = "rbxassetid://3944668821"  -- Warning
     elseif IconType == "Info" then
-        IconId = "rbxassetid://150832287"   -- Informationssymbol
+        IconId = "rbxassetid://150832287"   -- Information
     elseif IconType == "Error" then
-        IconId = "rbxassetid://6031262548"   -- Fehlerzeichen
+        IconId = "rbxassetid://6726315948"   -- Error
     else
-        IconId = "rbxassetid://3944668821"   -- Standard: Warnung
+        IconId = "rbxassetid://3944668821"   -- Standard: Warning
     end
 
     Warning.Name = "Warning"
