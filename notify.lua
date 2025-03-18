@@ -5,7 +5,7 @@ AbyssGUI.Name = "Abyss"
 AbyssGUI.Parent = game.CoreGui
 AbyssGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Volume)
+function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconType, Volume)
     local Notification = Instance.new("Frame")
     local Line = Instance.new("Frame")
     local Warning = Instance.new("ImageLabel")
@@ -15,10 +15,11 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     local Sound = Instance.new("Sound")
     local Border = Instance.new("Frame")
 
+    -- Benachrichtigungs-Frame
     Notification.Name = "Notification"
     Notification.Parent = AbyssGUI
     Notification.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Notification.BackgroundTransparency = 0.5  -- Weniger durchsichtig
+    Notification.BackgroundTransparency = 0.5
     Notification.BorderSizePixel = 0
     Notification.Position = UDim2.new(1, -455, 1, -80)
     Notification.Size = UDim2.new(0, 450, 0, 90)
@@ -31,10 +32,11 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Border.Name = "Border"
     Border.Parent = Notification
     Border.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Schwarzer Rand
-    Border.BorderSizePixel = 2  -- Dicke des Rahmens
+    Border.BorderSizePixel = 2
     Border.Position = UDim2.new(0, 0, 0, 0)
     Border.Size = UDim2.new(1, 0, 1, 0)
-    
+
+    -- Linie
     Line.Name = "Line"
     Line.Parent = Notification
     Line.BackgroundColor3 = Color3.fromRGB(241, 196, 15)
@@ -42,14 +44,27 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Line.Position = UDim2.new(0, 0, 0.95, 0)
     Line.Size = UDim2.new(0, 0, 0, 4)
 
+    -- Icons je nach Typ
+    local IconId
+    if IconType == "Warning" then
+        IconId = "rbxassetid://3944668821"  -- Warning
+    elseif IconType == "Info" then
+        IconId = "rbxassetid://9072944922"   -- Information
+    elseif IconType == "Error" then
+        IconId = "rbxassetid://9072944922"   -- Error
+    else
+        IconId = "rbxassetid://3944668821"   -- Standard: Warnung
+    end
+
     Warning.Name = "Warning"
     Warning.Parent = Notification
     Warning.BackgroundTransparency = 1.000
     Warning.Position = UDim2.new(0.03, 0, 0.15, 0)
     Warning.Size = UDim2.new(0, 40, 0, 40)
-    Warning.Image = IconId or "rbxassetid://3944668821"
-    Warning.ImageColor3 = Color3.fromRGB(241, 196, 15)
+    Warning.Image = IconId
+    Warning.ImageColor3 = Color3.fromRGB(241, 196, 15)  -- Standardfarbe für Warnung
 
+    -- Titel und Beschreibung
     Title.Name = "Title"
     Title.Parent = Notification
     Title.BackgroundTransparency = 1.000
@@ -72,6 +87,7 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Description.Font = Enum.Font.Gotham
     Description.TextXAlignment = Enum.TextXAlignment.Left
 
+    -- Sound und Lautstärke
     Sound.Name = "NotificationSound"
     Sound.Parent = Notification
     Sound.SoundId = SoundId or "rbxassetid://911123820"
@@ -79,6 +95,7 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Sound.Pitch = 1  -- Pitch bleibt normal
     Sound:Play()
 
+    -- Position und Animationen
     Notification:TweenPosition(UDim2.new(1, -455, 1, -120), "Out", "Sine", 0.35)
     wait(0.35)
     Line:TweenSize(UDim2.new(0, 450, 0, 4), "Out", "Linear", Delay)
@@ -88,8 +105,8 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Notification:Destroy()
 end
 
-getgenv().Notify = function(Title, Desc, Delay, SoundId, IconId, Volume)
-    NotificationLibrary:Notify(Title, Desc, Delay, SoundId, IconId, Volume)
+getgenv().Notify = function(Title, Desc, Delay, SoundId, IconType, Volume)
+    NotificationLibrary:Notify(Title, Desc, Delay, SoundId, IconType, Volume)
 end
 
 return NotificationLibrary
