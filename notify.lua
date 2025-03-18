@@ -51,7 +51,7 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconType, V
     elseif IconType == "Info" then
         IconId = "rbxassetid://150832287"   -- Information
     elseif IconType == "Error" then
-        IconId = "rbxassetid://6726315948"   -- Error
+        IconId = "rbxassetid://717772643"   -- Error
     else
         IconId = "rbxassetid://3944668821"   -- Standard: Warning
     end
