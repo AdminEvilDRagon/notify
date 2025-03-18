@@ -5,7 +5,7 @@ AbyssGUI.Name = "Abyss"
 AbyssGUI.Parent = game.CoreGui
 AbyssGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Volume)
+function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Volume, Pitch)
     local Notification = Instance.new("Frame")
     local Line = Instance.new("Frame")
     local Warning = Instance.new("ImageLabel")
@@ -13,6 +13,7 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     local Title = Instance.new("TextLabel")
     local Description = Instance.new("TextLabel")
     local Sound = Instance.new("Sound")
+    local Border = Instance.new("Frame")
 
     Notification.Name = "Notification"
     Notification.Parent = AbyssGUI
@@ -20,12 +21,20 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Notification.BackgroundTransparency = 0.3
     Notification.BorderSizePixel = 0
     Notification.Position = UDim2.new(1, -455, 1, -80)
-    Notification.Size = UDim2.new(0, 450, 0, 60)
+    Notification.Size = UDim2.new(0, 450, 0, 90)
     Notification.ClipsDescendants = true
 
     UICorner.CornerRadius = UDim.new(0, 12)
     UICorner.Parent = Notification
 
+    -- Border
+    Border.Name = "Border"
+    Border.Parent = Notification
+    Border.BackgroundColor3 = Color3.fromRGB(241, 196, 15)
+    Border.BorderSizePixel = 0
+    Border.Position = UDim2.new(0, 0, 0, 0)
+    Border.Size = UDim2.new(1, 0, 1, 0)
+    
     Line.Name = "Line"
     Line.Parent = Notification
     Line.BackgroundColor3 = Color3.fromRGB(241, 196, 15)
@@ -67,6 +76,7 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Sound.Parent = Notification
     Sound.SoundId = SoundId or "rbxassetid://911123820"
     Sound.Volume = Volume or 1
+    Sound.Pitch = Pitch or 1 -- Pitch hinzugefügt
     Sound:Play()
 
     Notification:TweenPosition(UDim2.new(1, -455, 1, -120), "Out", "Sine", 0.35)
@@ -78,8 +88,8 @@ function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Vol
     Notification:Destroy()
 end
 
-getgenv().Notify = function(Title, Desc, Delay, SoundId, IconId, Volume)
-    NotificationLibrary:Notify(Title, Desc, Delay, SoundId, IconId, Volume)
+getgenv().Notify = function(Title, Desc, Delay, SoundId, IconId, Volume, Pitch)
+    NotificationLibrary:Notify(Title, Desc, Delay, SoundId, IconId, Volume, Pitch)
 end
 
 return NotificationLibrary
