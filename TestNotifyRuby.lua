@@ -9,9 +9,9 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = game.CoreGui
 
 local Holder = Instance.new("Frame")
-Holder.Size = UDim2.new(1, 0, 0, 0)
+Holder.Size = UDim2.new(1, 0, 0, 100)
 Holder.Position = UDim2.new(0, 0, 0, 40)
-Holder.BackgroundTransparency = 0.25
+Holder.BackgroundTransparency = 1
 Holder.Name = "NotifyHolder"
 Holder.Parent = ScreenGui
 
@@ -28,7 +28,7 @@ function NotifyLib:Notify(message, duration)
 	NotifyFrame.Position = UDim2.new(0.5, 0, 0, 0)
 	NotifyFrame.AnchorPoint = Vector2.new(0.5, 0)
 	NotifyFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	NotifyFrame.BackgroundTransparency = 0.3
+	NotifyFrame.BackgroundTransparency = 0.7
 	NotifyFrame.BorderSizePixel = 0
 	NotifyFrame.Parent = Holder
 
