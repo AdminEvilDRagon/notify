@@ -11,7 +11,7 @@ ScreenGui.Parent = game.CoreGui
 local Holder = Instance.new("Frame")
 Holder.Size = UDim2.new(1, 0, 0, 0)
 Holder.Position = UDim2.new(0, 0, 0, 40)
-Holder.BackgroundTransparency = 1
+Holder.BackgroundTransparency = 0.25
 Holder.Name = "NotifyHolder"
 Holder.Parent = ScreenGui
 
