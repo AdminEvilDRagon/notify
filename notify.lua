@@ -1,95 +1,110 @@
-local NotificationLibrary = {}
+local NotifyLib = {}
 
-local AbyssGUI = Instance.new("ScreenGui")
-AbyssGUI.Name = "Abyss"
-AbyssGUI.Parent = game.CoreGui
-AbyssGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+local TweenService = game:GetService("TweenService")
+local SoundService = game:GetService("SoundService")
 
-function NotificationLibrary:Notify(TitleText, Desc, Delay, SoundId, IconId, Volume)
-    local Notification = Instance.new("Frame")
-    local Line = Instance.new("Frame")
-    local Warning = Instance.new("ImageLabel")
-    local UICorner = Instance.new("UICorner")
-    local Title = Instance.new("TextLabel")
-    local Description = Instance.new("TextLabel")
-    local Sound = Instance.new("Sound")
-    local Border = Instance.new("Frame")
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "RubyHubNotifyUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game.CoreGui
 
-    Notification.Name = "Notification"
-    Notification.Parent = AbyssGUI
-    Notification.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Notification.BackgroundTransparency = 0.5  -- Weniger durchsichtig
-    Notification.BorderSizePixel = 0
-    Notification.Position = UDim2.new(1, -455, 1, -80)
-    Notification.Size = UDim2.new(0, 450, 0, 90)
-    Notification.ClipsDescendants = true
+local Holder = Instance.new("Frame")
+Holder.Size = UDim2.new(1, 0, 0, 0)
+Holder.Position = UDim2.new(0, 0, 0, 40)
+Holder.BackgroundTransparency = 1
+Holder.Name = "NotifyHolder"
+Holder.Parent = ScreenGui
 
-    UICorner.CornerRadius = UDim.new(0, 12)
-    UICorner.Parent = Notification
+local notifySound = Instance.new("Sound")
+notifySound.SoundId = "rbxassetid://639589431"
+notifySound.Volume = 6
+notifySound.Parent = SoundService
 
-    -- Schwarzer Rahmen hinzufügen
-    Border.Name = "Border"
-    Border.Parent = Notification
-    Border.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Schwarzer Rand
-    Border.BorderSizePixel = 2  -- Dicke des Rahmens
-    Border.Position = UDim2.new(0, 0, 0, 0)
-    Border.Size = UDim2.new(1, 0, 1, 0)
-    
-    Line.Name = "Line"
-    Line.Parent = Notification
-    Line.BackgroundColor3 = Color3.fromRGB(241, 196, 15)
-    Line.BorderSizePixel = 0
-    Line.Position = UDim2.new(0, 0, 0.95, 0)
-    Line.Size = UDim2.new(0, 0, 0, 4)
+function NotifyLib:Notify(message, duration)
+	duration = duration or 3
 
-    Warning.Name = "Warning"
-    Warning.Parent = Notification
-    Warning.BackgroundTransparency = 1.000
-    Warning.Position = UDim2.new(0.03, 0, 0.15, 0)
-    Warning.Size = UDim2.new(0, 40, 0, 40)
-    Warning.Image = IconId or "rbxassetid://3944668821"
-    Warning.ImageColor3 = Color3.fromRGB(241, 196, 15)
+	local NotifyFrame = Instance.new("Frame")
+	NotifyFrame.Size = UDim2.new(0, 0, 0, 60)
+	NotifyFrame.Position = UDim2.new(0.5, 0, 0, 0)
+	NotifyFrame.AnchorPoint = Vector2.new(0.5, 0)
+	NotifyFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	NotifyFrame.BackgroundTransparency = 0.3
+	NotifyFrame.BorderSizePixel = 0
+	NotifyFrame.Parent = Holder
 
-    Title.Name = "Title"
-    Title.Parent = Notification
-    Title.BackgroundTransparency = 1.000
-    Title.Position = UDim2.new(0.15, 0, 0.15, 0)
-    Title.Size = UDim2.new(0, 300, 0, 15)
-    Title.Text = TitleText
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextSize = 14
-    Title.Font = Enum.Font.GothamBold
-    Title.TextXAlignment = Enum.TextXAlignment.Left
+	local UICorner = Instance.new("UICorner")
+	UICorner.CornerRadius = UDim.new(0, 8)
+	UICorner.Parent = NotifyFrame
 
-    Description.Name = "Description"
-    Description.Parent = Notification
-    Description.BackgroundTransparency = 1.000
-    Description.Position = UDim2.new(0.15, 0, 0.5, 0)
-    Description.Size = UDim2.new(0, 300, 0, 18)
-    Description.Text = Desc
-    Description.TextColor3 = Color3.fromRGB(200, 200, 200)
-    Description.TextSize = 12
-    Description.Font = Enum.Font.Gotham
-    Description.TextXAlignment = Enum.TextXAlignment.Left
+	local Title = Instance.new("TextLabel")
+	Title.Text = "-- Ruby Hub V2 --"
+	Title.Font = Enum.Font.GothamBold
+	Title.TextSize = 16
+	Title.TextColor3 = Color3.fromRGB(255, 0, 143)
+	Title.BackgroundTransparency = 1
+	Title.Position = UDim2.new(0.5, 0, 0, 5)
+	Title.AnchorPoint = Vector2.new(0.5, 0)
+	Title.Size = UDim2.new(1, -20, 0, 18)
+	Title.TextXAlignment = Enum.TextXAlignment.Center
+	Title.Parent = NotifyFrame
 
-    Sound.Name = "NotificationSound"
-    Sound.Parent = Notification
-    Sound.SoundId = SoundId or "rbxassetid://911123820"
-    Sound.Volume = Volume or 1  -- Lautstärke anpassen
-    Sound.Pitch = 1  -- Pitch bleibt normal
-    Sound:Play()
+	local GlowTitle = Instance.new("TextLabel")
+	GlowTitle.Text = Title.Text
+	GlowTitle.Font = Title.Font
+	GlowTitle.TextSize = Title.TextSize
+	GlowTitle.TextColor3 = Title.TextColor3
+	GlowTitle.TextTransparency = 0.6
+	GlowTitle.Position = Title.Position + UDim2.new(0, 1, 0, 1)
+	GlowTitle.AnchorPoint = Title.AnchorPoint
+	GlowTitle.Size = Title.Size
+	GlowTitle.BackgroundTransparency = 1
+	GlowTitle.TextXAlignment = Title.TextXAlignment
+	GlowTitle.ZIndex = Title.ZIndex - 1
+	GlowTitle.Parent = NotifyFrame
 
-    Notification:TweenPosition(UDim2.new(1, -455, 1, -120), "Out", "Sine", 0.35)
-    wait(0.35)
-    Line:TweenSize(UDim2.new(0, 450, 0, 4), "Out", "Linear", Delay)
-    wait(Delay)
-    Notification:TweenPosition(UDim2.new(1, -455, 1, 50), "Out", "Sine", 0.35)
-    wait(0.35)
-    Notification:Destroy()
+	local Msg = Instance.new("TextLabel")
+	Msg.Text = message
+	Msg.Font = Enum.Font.GothamSemibold
+	Msg.TextSize = 18
+	Msg.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Msg.BackgroundTransparency = 1
+	Msg.Position = UDim2.new(0, 10, 0, 25)
+	Msg.Size = UDim2.new(1, -20, 1, -30)
+	Msg.TextXAlignment = Enum.TextXAlignment.Left
+	Msg.TextWrapped = true
+	Msg.Parent = NotifyFrame
+
+	local GlowMsg = Instance.new("TextLabel")
+	GlowMsg.Text = Msg.Text
+	GlowMsg.Font = Msg.Font
+	GlowMsg.TextSize = Msg.TextSize
+	GlowMsg.TextColor3 = Color3.fromRGB(255, 255, 255)
+	GlowMsg.TextTransparency = 0.6
+	GlowMsg.Position = Msg.Position + UDim2.new(0, 1, 0, 1)
+	GlowMsg.Size = Msg.Size
+	GlowMsg.BackgroundTransparency = 1
+	GlowMsg.TextXAlignment = Msg.TextXAlignment
+	GlowMsg.TextWrapped = true
+	GlowMsg.ZIndex = Msg.ZIndex - 1
+	GlowMsg.Parent = NotifyFrame
+
+	notifySound:Play()
+
+	local tweenIn = TweenService:Create(NotifyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Size = UDim2.new(0, 320, 0, 60),
+		BackgroundTransparency = 0.3
+	})
+	tweenIn:Play()
+
+	task.delay(duration, function()
+		local tweenOut = TweenService:Create(NotifyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+			BackgroundTransparency = 1,
+			Size = UDim2.new(0, 0, 0, 60)
+		})
+		tweenOut:Play()
+		tweenOut.Completed:Wait()
+		NotifyFrame:Destroy()
+	end)
 end
 
-getgenv().Notify = function(Title, Desc, Delay, SoundId, IconId, Volume)
-    NotificationLibrary:Notify(Title, Desc, Delay, SoundId, IconId, Volume)
-end
-
-return NotificationLibrary
+return NotifyLib
